@@ -8,10 +8,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequiredArgsConstructor
+
 @RequestMapping("/api/v1/compte")
 public class CompteController {
     private final UtilisateurServiceInterface utilisateurServiceInterface;
+
+    public CompteController(UtilisateurServiceInterface utilisateurServiceInterface) {
+        this.utilisateurServiceInterface = utilisateurServiceInterface;
+    }
 
     @PutMapping
     public ResponseEntity<?> editerProfile(@RequestBody ProfileUtilisateurRequest utilisateurInscriptionRequest){

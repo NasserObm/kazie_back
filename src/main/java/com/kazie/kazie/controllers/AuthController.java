@@ -16,8 +16,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
-@RequiredArgsConstructor
+
 public class AuthController {
+    public AuthController(AuthenticationServiceInterface authenticationServiceInterface) {
+        this.authenticationServiceInterface = authenticationServiceInterface;
+    }
+
     //injection de dépandance par constructeur
     private final AuthenticationServiceInterface authenticationServiceInterface;
     @PostMapping("/client")

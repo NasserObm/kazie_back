@@ -10,10 +10,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/categories")
-@RequiredArgsConstructor
+
 public class CategorieController {
     //Injections de dépendances par constructeur
     private final CategorieServiceInterface categorieServiceInterface;
+
+    public CategorieController(CategorieServiceInterface categorieServiceInterface) {
+        this.categorieServiceInterface = categorieServiceInterface;
+    }
 
     @PostMapping()
     public ResponseEntity<?> ajouter(@RequestBody CategorieRequest categorieRequest){

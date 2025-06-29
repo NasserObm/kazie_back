@@ -13,8 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@RequiredArgsConstructor
+
 public class ProMapper {
+    public ProMapper(RealisationRepository realisationRepositor) {
+        this.realisationRepositor = realisationRepositor;
+    }
+
     //injection de dépendance par constructeur
     private final RealisationRepository realisationRepositor;
 

@@ -21,7 +21,7 @@ public class Realisation {
     @Column(nullable = false)
     private String urlImage;
     @ManyToOne
-    @JoinColumn(name = "professionnel_id",nullable = false,unique = true)
+    @JoinColumn(name = "professionnel_id",nullable = false)
     private Professionnel professionnel;
 
     //Constructeurs

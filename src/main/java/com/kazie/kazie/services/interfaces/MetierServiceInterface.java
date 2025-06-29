@@ -17,4 +17,6 @@ public interface MetierServiceInterface {
     //lister tous les metiers d'une catégorie
     List<MetierResponse> listerParCategorie(String nomCategorie);
     void voirMetier(String nomMetier);
+    List<?> rechercherParMotCle(String query);
+
 }

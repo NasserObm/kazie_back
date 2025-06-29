@@ -21,11 +21,21 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Comparator;
 import java.util.List;
 @RestController
-@RequestMapping("/api/classement")
-@RequiredArgsConstructor
+@RequestMapping("/api/v1/classement")
+
 public class ClassementController {
 
     private final CategorieRepository categorieRepository;
+
+    public ClassementController(CategorieRepository categorieRepository, MetierRepository metierRepository, ProfessionnelRepository professionnelRepository, CategorieMapper categorieMapper, MetierMapper metierMapper, RealisationMapper realisationMapper) {
+        this.categorieRepository = categorieRepository;
+        this.metierRepository = metierRepository;
+        this.professionnelRepository = professionnelRepository;
+        this.categorieMapper = categorieMapper;
+        this.metierMapper = metierMapper;
+        this.realisationMapper = realisationMapper;
+    }
+
     private final MetierRepository metierRepository;
     private final ProfessionnelRepository professionnelRepository;
 

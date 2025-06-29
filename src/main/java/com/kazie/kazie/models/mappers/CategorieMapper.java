@@ -13,8 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@RequiredArgsConstructor
+
 public class CategorieMapper {
+    public CategorieMapper(MetierMapper metierMapper) {
+        this.metierMapper = metierMapper;
+    }
+
     //Injection de dépendance par constructeur
     private final MetierMapper metierMapper;
 

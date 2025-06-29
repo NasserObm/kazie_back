@@ -10,9 +10,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
-@RequiredArgsConstructor
+
 @RequestMapping("/api/v1/realisations")
 public class RealisationController {
+    public RealisationController(RealisationServiceInterface realisationServiceInterface) {
+        this.realisationServiceInterface = realisationServiceInterface;
+    }
+
     private final RealisationServiceInterface realisationServiceInterface;
 
    @PostMapping

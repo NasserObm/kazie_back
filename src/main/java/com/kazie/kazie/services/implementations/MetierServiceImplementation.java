@@ -15,15 +15,24 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
 @Service
-@RequiredArgsConstructor
+
 public class MetierServiceImplementation implements MetierServiceInterface {
     //injection de dépandance par constructeur
     private final MetierRepository metierRepository;
     private final MetierMapper metierMapper;
+
+    public MetierServiceImplementation(MetierRepository metierRepository, MetierMapper metierMapper, CategorieRepository categorieRepository, VueServiceImpl vueService) {
+        this.metierRepository = metierRepository;
+        this.metierMapper = metierMapper;
+        this.categorieRepository = categorieRepository;
+        this.vueService = vueService;
+    }
+
     private final CategorieRepository categorieRepository;
     private final VueServiceImpl vueService;
     //implementation du crud
@@ -104,4 +113,12 @@ public class MetierServiceImplementation implements MetierServiceInterface {
            metierRepository.save(metier);
        }
     }
+    @Override
+    public List<MetierResponse> rechercherParMotCle(String query) {
+        List<Metier> metiers = metierRepository.findByNomContainingIgnoreCase(query);
+        return metiers.stream()
+                .map(metier -> metierMapper.enDtos(metier, metier.getCategorie().getNom()))
+                .collect(Collectors.toList());
+    }
+
 }
