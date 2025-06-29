@@ -8,8 +8,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/metiers")
-@RequiredArgsConstructor
+
 public class MetierController {
+    public MetierController(MetierServiceInterface metierServiceInterface) {
+        this.metierServiceInterface = metierServiceInterface;
+    }
+
     //injection de dépendance par constructeur
     private final MetierServiceInterface metierServiceInterface;
     //implementations end-point CRUD
@@ -44,4 +48,10 @@ public class MetierController {
     public void vue(@PathVariable String nomMetier){
         metierServiceInterface.voirMetier(nomMetier);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> rechercherParMotCle(@RequestParam String query) {
+        return ResponseEntity.ok(metierServiceInterface.rechercherParMotCle(query));
+    }
+
 }

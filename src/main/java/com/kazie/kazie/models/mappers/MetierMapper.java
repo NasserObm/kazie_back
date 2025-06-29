@@ -13,8 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@RequiredArgsConstructor
+
 public class MetierMapper {
+    public MetierMapper(ProfessionnelRepository professionnelRepository, RealisationMapper realisationMapper) {
+        this.professionnelRepository = professionnelRepository;
+        this.realisationMapper = realisationMapper;
+    }
+
     //injection de dépendance par constructeur
     private final ProfessionnelRepository professionnelRepository;
     private final RealisationMapper realisationMapper;

@@ -6,8 +6,12 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
+
 public class EmailServiceImplementation {
+    public EmailServiceImplementation(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
+
     private final JavaMailSender mailSender;
 
     public void envoyerTest(String to) {

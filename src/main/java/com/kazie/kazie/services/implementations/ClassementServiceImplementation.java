@@ -15,10 +15,18 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+
 public class ClassementServiceImplementation implements ClassementServiceInterface {
     //injection de dépendance par constructeur
     private final CategorieRepository categorieRepository;
+
+    public ClassementServiceImplementation(CategorieRepository categorieRepository, MetierRepository metierRepository, UtilisateurRepository utilisateurRepository, ProfessionnelRepository professionnelRepository) {
+        this.categorieRepository = categorieRepository;
+        this.metierRepository = metierRepository;
+        this.utilisateurRepository = utilisateurRepository;
+        this.professionnelRepository = professionnelRepository;
+    }
+
     private final MetierRepository metierRepository;
     private final UtilisateurRepository utilisateurRepository;
     private final ProfessionnelRepository professionnelRepository;

@@ -21,10 +21,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+
 public class RealisationServiceImplementation implements RealisationServiceInterface {
     //injection de dépendance par constructeur
     private final RealisationRepository realisationRepository;
+
+    public RealisationServiceImplementation(RealisationRepository realisationRepository, RealisationMapper realisationMapper, UtilisateurRepository utilisateurRepository, ProfessionnelRepository professionnelRepository) {
+        this.realisationRepository = realisationRepository;
+        this.realisationMapper = realisationMapper;
+        this.utilisateurRepository = utilisateurRepository;
+        this.professionnelRepository = professionnelRepository;
+    }
+
     private final RealisationMapper realisationMapper;
     private final UtilisateurRepository utilisateurRepository;
     private final ProfessionnelRepository professionnelRepository;

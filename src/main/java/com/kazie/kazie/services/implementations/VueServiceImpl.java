@@ -12,10 +12,16 @@
     import org.springframework.stereotype.Service;
 
     @Service
-    @RequiredArgsConstructor
+
     public class VueServiceImpl {
 
         private final VueRepository vueRepository;
+
+        public VueServiceImpl(VueRepository vueRepository, UtilisateurRepository utilisateurRepository) {
+            this.vueRepository = vueRepository;
+            this.utilisateurRepository = utilisateurRepository;
+        }
+
         private final UtilisateurRepository utilisateurRepository;
 
         public boolean ajouterVueSiNouvelle( TypeVue type, String cibleNom) {

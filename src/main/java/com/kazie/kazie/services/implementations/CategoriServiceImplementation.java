@@ -18,8 +18,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+
 public class CategoriServiceImplementation implements CategorieServiceInterface {
+    public CategoriServiceImplementation(CategorieMapper categorieMapper, CategorieRepository categorieRepository, MetierRepository metierRepository, VueServiceImpl vueService) {
+        this.categorieMapper = categorieMapper;
+        this.categorieRepository = categorieRepository;
+        this.metierRepository = metierRepository;
+        this.vueService = vueService;
+    }
+
     //Injections des dépendances par constructeur
     private final CategorieMapper categorieMapper;
     private final CategorieRepository categorieRepository;

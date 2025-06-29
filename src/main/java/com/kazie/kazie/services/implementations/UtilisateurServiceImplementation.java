@@ -18,10 +18,18 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
+
 public class UtilisateurServiceImplementation implements UtilisateurServiceInterface {
     private final UtilisateurRepository utilisateurRepository;
     private final MetierRepository metierRepository;
+
+    public UtilisateurServiceImplementation(UtilisateurRepository utilisateurRepository, MetierRepository metierRepository, ProfessionnelRepository professionnelRepository, VueServiceImpl vueService) {
+        this.utilisateurRepository = utilisateurRepository;
+        this.metierRepository = metierRepository;
+        this.professionnelRepository = professionnelRepository;
+        this.vueService = vueService;
+    }
+
     private final ProfessionnelRepository professionnelRepository;
     private final VueServiceImpl vueService;
 

@@ -22,7 +22,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
+
 public class AuthenticationServiceImplementation implements AuthenticationServiceInterface {
     //injection de dépendance par constructeur
     private final UtilisateurRepository utilisateurRepository;
@@ -33,23 +33,42 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
     private final ProfessionnelRepository professionnelRepository;
     private final MetierRepository metierRepository;
 
+    public AuthenticationServiceImplementation(UtilisateurRepository utilisateurRepository, AuthenticationManager authenticationManager, JwtService jwtService, AuthenticationMapper authenticationMapper, ProMapper proMapper, ProfessionnelRepository professionnelRepository, MetierRepository metierRepository) {
+        this.utilisateurRepository = utilisateurRepository;
+        this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
+        this.authenticationMapper = authenticationMapper;
+        this.proMapper = proMapper;
+        this.professionnelRepository = professionnelRepository;
+        this.metierRepository = metierRepository;
+    }
+
     @Override
     public ConnexionReponse connecter(DemandeConnexionRequest demandeConnexionRequest) {
-      try {
-          authenticationManager.authenticate(
-                  new UsernamePasswordAuthenticationToken(
-                          demandeConnexionRequest.getEmail(),
-                          demandeConnexionRequest.getMotDePasse()
-                  )
-          );
-      }catch (AuthenticationException e){
-          throw  new ResourceNotFoundException("Identifiant invalides");
-      }
-        Utilisateur utilisateur=utilisateurRepository.findByEmail(demandeConnexionRequest.getEmail()).orElseThrow(
-                ()-> new ResourceNotFoundException("Aucun utilisateur ne possède cet email")
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            demandeConnexionRequest.getEmail(),
+                            demandeConnexionRequest.getMotDePasse()
+                    )
+            );
+        } catch (AuthenticationException e) {
+            throw new ResourceNotFoundException("Identifiants invalides");
+        }
+
+        Utilisateur utilisateur = utilisateurRepository.findByEmail(demandeConnexionRequest.getEmail())
+                .orElseThrow(() -> new ResourceNotFoundException("Aucun utilisateur ne possède cet email"));
+
+        String token = jwtService.generateToken(utilisateur);
+
+        return new ConnexionReponse(
+                token,
+                utilisateur.getNom(),
+                utilisateur.getEmail(),
+                utilisateur.getUrlProfile()
         );
-      return new ConnexionReponse(jwtService.generateToken(utilisateur));
     }
+
 
     @Override
     public ConnexionReponse inscriptionPro(ProInscriptionRequest proInscriptionRequest) {
@@ -70,7 +89,13 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
                 utilisateurRepository.delete(utilisateur);//RollBack en cas d'erreur
                 throw new ResourceNotFoundException("Erreur dans la création du professionnel:"+ e.getMessage());
             }
-            return new ConnexionReponse(jwtService.generateToken(utilisateur));
+            return new ConnexionReponse(
+                    jwtService.generateToken(utilisateur),
+                    utilisateur.getNom(),
+                    utilisateur.getEmail(),
+                    utilisateur.getUrlProfile()
+            );
+
         }catch (Exception e){
             throw new ResourceNotFoundException("Erreur lors de l'inscription du professionnel:"+e.getMessage());
         }
@@ -85,7 +110,13 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
             }
             Utilisateur utilisateur=authenticationMapper.enEntiteClient(utilisateurInscriptionRequest);
             utilisateurRepository.save(utilisateur);
-            return new ConnexionReponse(jwtService.generateToken(utilisateur));
+            return new ConnexionReponse(
+                    jwtService.generateToken(utilisateur),
+                    utilisateur.getNom(),
+                    utilisateur.getEmail(),
+                    utilisateur.getUrlProfile()
+            );
+
 
         }catch (Exception e){
            throw new ResourceNotFoundException("Erreur lors de l'inscription du client: "+e.getMessage());
@@ -100,7 +131,13 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
             }
             Utilisateur utilisateur=authenticationMapper.enEntiteAdmin(utilisateurInscriptionRequest);
             utilisateurRepository.save(utilisateur);
-            return new ConnexionReponse(jwtService.generateToken(utilisateur));
+            return new ConnexionReponse(
+                    jwtService.generateToken(utilisateur),
+                    utilisateur.getNom(),
+                    utilisateur.getEmail(),
+                    utilisateur.getUrlProfile()
+            );
+
 
         }catch (Exception e){
             throw new ResourceNotFoundException("Erreur lors de l'inscription de l'admin: "+e.getMessage());
